@@ -1,4 +1,4 @@
-#shopping-bot-forclothes coorporated with @Liangyu Wu
+#shopping-bot-for-clothes coorporated with @Liangyu Wu
 
 This is a shopping bot based on Microsoft BotFramework Python SDK
 
