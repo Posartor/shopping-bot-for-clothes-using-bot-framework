@@ -1,2 +1,15 @@
-# shopping-bot-for-clothes
-It's a shopping bot based on Azure and Bot Framework,which is able to recommand clothes to the user with limited rounds of communication from a database.#这是一个使用Azure和Bot Framework开发的推荐机器人，可以通过和用户的有限次数的对话从自己的数据库中推荐出衣服。
+#shopping_bot
+
+This is a shopping bot based on Microsoft BotFramework Python SDK.
+
+There are 5 steps to run the robot:
+
+1. cd to the "shopping-bot-for-clothes" work path, and run "pip install -r requirements.txt" in your cmd or terminal to install all the requirements.
+
+2. Run "python(or python3) app.py", now the service is running on your computer.
+
+3. Install Microsoft Bot Framework: https://github.com/microsoft/BotFramework-Emulator
+
+4. Run Microsoft Bot Framework, set the Bot URL config as "http://localhost:3978/api/messages"
+
+5. Test the bot as you wish!
