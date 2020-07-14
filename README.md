@@ -1,6 +1,6 @@
-#shopping_bot
+#shopping-bot-forclothes coorporated with @Liangyu Wu
 
-This is a shopping bot based on Microsoft BotFramework Python SDK.
+This is a shopping bot based on Microsoft BotFramework Python SDK
 
 There are 5 steps to run the robot:
 
@@ -12,4 +12,4 @@ There are 5 steps to run the robot:
 
 4. Run Microsoft Bot Framework, set the Bot URL config as "http://localhost:3978/api/messages"
 
-5. Test the bot as you wish!
+5. Test the bot.
