@@ -85,7 +85,7 @@ class AdjustDialog(CancelAndHelpDialog):
         if ok:
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt','w+') as f:
                 f.write('Yes')
-            return
+            return 
         else:
             return await step_context.replace_dialog(self.id)
 
