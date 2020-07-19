@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 import json
 import os
-
+import fileinput
 def adjust(score_dict):
 	path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/clothes.xlsx'
 
@@ -37,6 +37,13 @@ def adjust(score_dict):
 	            score += score_dict[key]*df.loc[i,key]
 	    score_ls.append(score)
 
+	for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt',inplace = 1):
+		if not fileinput.isfirstline():
+			print(line.replace('\n',''))
+	for i in range(len(score_ls)):
+		with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt','a+') as f:
+			f.write(str(score_ls[i]))
+			f.write(",")		
 	print(score_ls)
 
 	index = 0
@@ -45,7 +52,9 @@ def adjust(score_dict):
 	    if score_ls[i]>big:
 	        index = i
 	        big = score_ls[i]
-
+	with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt','a+') as f:
+		f.write(str(index))
+		f.write('\n')
 	text = f"为您推荐{df.loc[index,'brand']}生产的{df.loc[index,'name']}，售价{df.loc[index,'price']}元。"
 
 	return (index,text)
