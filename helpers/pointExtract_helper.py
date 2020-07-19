@@ -10,7 +10,7 @@ def pointExtract(text1):
 
 	client = AipNlp(APP_ID, API_KEY, SECRET_KEY)
 
-	looking_ls = ['便宜点','贵一点','长袖','短袖','正式职场','休闲','帅潮流酷','甜美可爱']
+	looking_ls = ['便宜点','贵一点','长袖','短袖','正式职场','休闲','帅潮流酷','甜美可爱少女']
 	name_ls = ["too-expensive","to-cheap","long-sleeves","short-sleeves","style-office","style-casual","style-cool","style-japanese"]
 
 
@@ -33,7 +33,7 @@ def pointExtract(text1):
 			max = score_ls[i]
 	score_dict_max = {name_ls[index]:max}
 
-	print("score_dict_maxsimilarity = ")
+	print("score_dict_max_similarity = ")
 	print(score_dict_max)
 
 	return score_dict_max

@@ -9,7 +9,7 @@ def style_cal(text1):
 
 	client = AipNlp(APP_ID, API_KEY, SECRET_KEY)
 
-	style_ls = ["淑女少女","中性","日系韩系日韩甜美可爱","潮流嘻哈街头帅气酷","休闲日常舒适舒服","办公职场商务正式"]
+	style_ls = ["淑女","中性","日系韩系可爱少女","潮流嘻哈街头帅气酷","休闲日常舒适舒服","办公职场商务正式"]
 	name_ls = ["style-ladylike","style-neutral","style-japanese","style-cool","style-casual","style-office"]
 
 
