@@ -21,7 +21,7 @@ import os
 import json
 
 from helpers.ok_helper import is_ok
-
+import fileinput
 
 
 
@@ -85,6 +85,20 @@ class AdjustDialog(CancelAndHelpDialog):
         if ok:
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt','w+') as f:
                 f.write('Yes')
+            for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt',inplace = 1):
+                if not fileinput.isfirstline():
+                    print(line.replace('\n',''))
+            with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt','w+') as f:
+                f.truncate(0)
+            for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/pricelog.txt',inplace = 1):
+                if not fileinput.isfirstline():
+                    print(line.replace('\n',''))
+            for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt',inplace = 1):
+                if not fileinput.isfirstline():
+                    print(line.replace('\n',''))
+            for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt',inplace = 1):
+                if not fileinput.isfirstline():
+                    print(line.replace('\n',''))
             return 
         else:
             return await step_context.replace_dialog(self.id)
@@ -92,8 +106,16 @@ class AdjustDialog(CancelAndHelpDialog):
         # Load attachment from file.
     def create_adaptive_card_attachment(self,id):
         relative_path = os.path.abspath(os.path.dirname(__file__))
+        with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt','r+') as f:
+            color = f.readline()
+        if color =='deep':
+            suffix = '.2'
+            print('深色')
+        else:
+            suffix = '.1'
+            print('浅色')
         path = os.path.join(relative_path, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+"/json/test.json")
-        img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/img/'+str(id+1)+'.jpg'
+        img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/img/'+str(id+1)+suffix+'.jpg'
         #print(img_path)
         with open(path) as in_file:
             card = json.load(in_file)

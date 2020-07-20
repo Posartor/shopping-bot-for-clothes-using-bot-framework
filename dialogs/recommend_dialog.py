@@ -13,6 +13,7 @@ from helpers._function_helper import function_cal
 from helpers._sex_helper import sex_cal
 from helpers._style_helper import style_cal
 from helpers._season_helper import season_cal
+from helpers._color_helper import color_cal
 from helpers.cost_helper import cost_cal
 from helpers.ok_helper import is_ok
 
@@ -24,7 +25,6 @@ import os.path
 import time
 
 import os
-
 class RecommendDialog(CancelAndHelpDialog):
     def __init__(self, dialog_id: str = None):
         super(RecommendDialog, self).__init__(dialog_id or RecommendDialog.__name__)
@@ -40,6 +40,7 @@ class RecommendDialog(CancelAndHelpDialog):
                     self.season_step,
                     self.function_step,
                     self.style_step,
+                    self.color_step,
                     self.cost_step,
                     self.confirm_step,
                     self.final_step,
@@ -135,6 +136,22 @@ class RecommendDialog(CancelAndHelpDialog):
                 TextPrompt.__name__, PromptOptions(prompt=prompt_message)
             )
         return await step_context.next(product_details.style)
+    async def color_step(
+        self, step_context: WaterfallStepContext
+    ) -> DialogTurnResult:
+        product_details = step_context.options
+        # Capture the response to the previous step's prompt
+        product_details.style = style_cal(step_context.result)
+
+        if product_details.color is None:
+            message_text = "您希望这件衣服浅色还是深色？"
+            prompt_message = MessageFactory.text(
+                message_text, message_text, InputHints.expecting_input
+            )
+            return await step_context.prompt(
+                TextPrompt.__name__, PromptOptions(prompt=prompt_message)
+            )
+        return await step_context.next(product_details.color)
 
     async def cost_step(
         self, step_context: WaterfallStepContext
@@ -142,8 +159,13 @@ class RecommendDialog(CancelAndHelpDialog):
         product_details = step_context.options
 
         # Capture the response to the previous step's prompt
-        product_details.style = style_cal(step_context.result)
-
+        product_details.color = color_cal(step_context.result)
+        if product_details.color:
+            with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt','a+') as f:
+                f.write('light')
+        else:
+            with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt','a+') as f:
+                f.write('deep')
         if product_details.cost is None:
             message_text = "您预期这件衣服是多少元呢（请以xxx-xxx的形式回答）？"
             prompt_message = MessageFactory.text(
@@ -153,6 +175,8 @@ class RecommendDialog(CancelAndHelpDialog):
                 TextPrompt.__name__, PromptOptions(prompt=prompt_message)
             )
         return await step_context.next(product_details.cost)
+
+
 
     async def confirm_step(
         self, step_context: WaterfallStepContext
@@ -225,9 +249,17 @@ class RecommendDialog(CancelAndHelpDialog):
     # Load attachment from file.
     def create_adaptive_card_attachment(self,id):
         relative_path = os.path.abspath(os.path.dirname(__file__))
+        with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt','r+') as f:
+            color = f.readline()
+        if color =='deep':
+            suffix = '.2'
+            print('深色')
+        else:
+            suffix = '.1'
+            print('浅色')
         path = os.path.join(relative_path, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+"/json/test.json")
-        img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/img/'+str(id+1)+'.jpg'
-        #print(img_path)
+        img_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/img/'+str(id+1)+suffix+'.jpg'
+
         with open(path) as in_file:
             card = json.load(in_file)
             card['body'][0]['url'] = img_path
