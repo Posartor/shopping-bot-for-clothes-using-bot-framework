@@ -13,3 +13,4 @@ There are 5 steps to run the robot:
 4. Run Microsoft Bot Framework, set the Bot URL config as "http://localhost:3978/api/messages"
 
 5. Test the bot.
+P.S. Due to the clothes database is too small, it is recommended to widen the price range.20(or even less) to 400 is a good choice.
