@@ -11,13 +11,13 @@ def adjust(score_dict):
 	#looking = {'looking-elegent': 0.459218, 'looking-business': 0.283294, 'looking-cool': 0.560444}
 	with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt','r+') as f:
 		chosen_ls = f.readlines()
-
-	#print(chosen_ls)
+	print("已推荐过衣服为：")
+	print(chosen_ls)
 	with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt','r+') as f:
 		score_gotten = f.readline()
 	score_gotten = score_gotten.split(',')
-
-	#print(score_gotten)
+	print("已有打分为：")
+	print(score_gotten)
 	with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/priceLog.txt','r+') as f:
 		price = eval(f.read())
 
@@ -40,10 +40,15 @@ def adjust(score_dict):
 	for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt',inplace = 1):
 		if not fileinput.isfirstline():
 			print(line.replace('\n',''))
+	with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt') as f:
+		content = f.read()
+	print("删除后的打分文档为：")
+	print(content)
 	for i in range(len(score_ls)):
 		with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt','a+') as f:
 			f.write(str(score_ls[i]))
-			f.write(",")		
+			f.write(",")
+	print("迭代后的打分文档为：")		
 	print(score_ls)
 
 	index = 0
