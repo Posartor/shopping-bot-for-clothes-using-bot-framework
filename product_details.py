@@ -11,6 +11,7 @@ class ProductDetails:
         self.function = None
         self.style = None
         self.cost = None
+        self.color = None
         self.ok = None
         self.unsupported_things = []
 
