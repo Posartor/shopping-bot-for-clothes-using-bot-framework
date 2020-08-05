@@ -14,6 +14,7 @@ from helpers._sex_helper import sex_cal
 from helpers._style_helper import style_cal
 from helpers._season_helper import season_cal
 from helpers._color_helper import color_cal
+from helpers._typ_helper import typ_cal
 from helpers.cost_helper import cost_cal
 from helpers.ok_helper import is_ok
 
@@ -38,6 +39,7 @@ class RecommendDialog(CancelAndHelpDialog):
                     self.sex_step,
                     self.age_step,
                     self.season_step,
+                    self.typ_step,
                     self.function_step,
                     self.style_step,
                     self.color_step,
@@ -73,14 +75,14 @@ class RecommendDialog(CancelAndHelpDialog):
         # Capture the response to the previous step's prompt
         product_details.sex = sex_cal(step_context.result)
 
-        #if product_details.cost is None:
-        message_text = "您是哪一年龄段人群（请在青少年、青年、中年、老年中选择一项回答）？"
-        prompt_message = MessageFactory.text(
-            message_text, message_text, InputHints.expecting_input
-        )
-        return await step_context.prompt(
-            TextPrompt.__name__, PromptOptions(prompt=prompt_message)
-        )
+        if product_details.age is None:
+            message_text = "您是哪一年龄段人群（请在青少年、青年、中年、老年中选择一项回答）？"
+            prompt_message = MessageFactory.text(
+                message_text, message_text, InputHints.expecting_input
+            )
+            return await step_context.prompt(
+                TextPrompt.__name__, PromptOptions(prompt=prompt_message)
+            )
         return await step_context.next(product_details.age)
 
 
@@ -91,7 +93,7 @@ class RecommendDialog(CancelAndHelpDialog):
 
         # Capture the response to the previous step's prompt
         product_details.age = age_cal(step_context.result)
-
+        #print(product_details.age)
         if product_details.season is None:
             message_text = "这件衣服是在什么季节穿呢？"
             prompt_message = MessageFactory.text(
@@ -102,13 +104,33 @@ class RecommendDialog(CancelAndHelpDialog):
             )
         return await step_context.next(product_details.season)
 
-    async def function_step(
+    async def typ_step(
         self, step_context: WaterfallStepContext
     ) -> DialogTurnResult:
         product_details = step_context.options
 
         # Capture the response to the previous step's prompt
         product_details.season = season_cal(step_context.result)
+
+        if product_details.typ is None:
+            message_text = "这件衣服属于什么类型呢（上衣或连衣裙）？"
+            prompt_message = MessageFactory.text(
+                message_text, message_text, InputHints.expecting_input
+            )
+            return await step_context.prompt(
+                TextPrompt.__name__, PromptOptions(prompt=prompt_message)
+            )
+        return await step_context.next(product_details.typ)
+
+
+
+    async def function_step(
+        self, step_context: WaterfallStepContext
+    ) -> DialogTurnResult:
+        product_details = step_context.options
+
+        # Capture the response to the previous step's prompt
+        product_details.typ = typ_cal(step_context.result)
 
         if product_details.function is None:
             message_text = "穿这件衣服的功能是什么呢（可从日常、运动、职场中选择回答）？"
@@ -214,9 +236,10 @@ class RecommendDialog(CancelAndHelpDialog):
         """
         if step_context.result:
             product_details = step_context.options
-
+            print(product_details.sex,product_details.age,product_details.season,
+                product_details.typ,product_details.function,product_details.style,product_details.cost)
             recommend_id, recommend_result = recommend(product_details.sex,product_details.age,product_details.season,
-                product_details.function,product_details.style,product_details.cost)
+                product_details.typ,product_details.function,product_details.style,product_details.cost)
 
             welcome_card = self.create_adaptive_card_attachment(recommend_id)
             response = MessageFactory.attachment(welcome_card)
@@ -227,7 +250,7 @@ class RecommendDialog(CancelAndHelpDialog):
                 message_text, message_text, InputHints.ignoring_input
             )    
             await step_context.context.send_activity(prompt_message)
-
+            '''
             pro_dict = {}
             pro_dict['sex'] = product_details.sex
             pro_dict['age'] = product_details.age
@@ -235,11 +258,11 @@ class RecommendDialog(CancelAndHelpDialog):
             pro_dict['function'] = product_details.function
             pro_dict['style'] = product_details.style
             pro_dict['cost'] = product_details.cost
-
+            '''
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt','a+') as f:
                 f.write(str(recommend_id))
                 f.write('\n')
-            with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/priceLog.txt','w+') as f:
+            with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/pricelog.txt','w+') as f:
                 f.write(str(product_details.cost))
 
             return await step_context.end_dialog(product_details)

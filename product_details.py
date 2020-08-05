@@ -8,6 +8,7 @@ class ProductDetails:
         self.age = None
         self.brand = None
         self.season = None
+        self.typ = None
         self.function = None
         self.style = None
         self.cost = None

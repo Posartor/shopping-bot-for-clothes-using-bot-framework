@@ -15,12 +15,24 @@ def style_cal(text1):
 
 	""" 调用短文本相似度 """
 	score_ls = []
+	score_dict_1 = {}
 	score_dict = {}
 	for i in range(len(style_ls)):
 		time.sleep(0.5)
 		result = client.simnet(text1, style_ls[i])["score"]
 		score_ls.append(result)
-		score_dict[name_ls[i]] = score_ls[i]
+		score_dict_1[name_ls[i]] = score_ls[i]
 
+	big = 0
+	style = ''
+	for k,v in score_dict_1.items():
+		if v > big:
+			big = v
+			style = k
+	for k in score_dict_1.keys():
+		if k == style:
+			score_dict[k] = 10
+		else:
+			score_dict[k] = 0
 
 	return score_dict

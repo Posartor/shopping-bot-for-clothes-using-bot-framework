@@ -83,6 +83,7 @@ class AdjustDialog(CancelAndHelpDialog):
         ok = is_ok(details)
 
         if ok:
+            '''
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt','w+') as f:
                 f.write('Yes')
             for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt',inplace = 1):
@@ -99,6 +100,12 @@ class AdjustDialog(CancelAndHelpDialog):
             for line in fileinput.input(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt',inplace = 1):
                 if not fileinput.isfirstline():
                     print(line.replace('\n',''))
+            '''
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/pricelog.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt', 'w').close()
             return 
         else:
             return await step_context.replace_dialog(self.id)

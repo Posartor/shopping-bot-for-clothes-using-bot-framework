@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 import os
 
-def recommend(sex,season,age,function,style,price):
+def recommend(sex,age,season,typ,function,style,price):
 	path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/sources/clothes.xlsx'
 
 	df = pd.read_excel(path)
@@ -11,9 +11,16 @@ def recommend(sex,season,age,function,style,price):
 	price_low = price['low']
 	price_high = price['high']
 
+
 	#print(df.columns)
 	#print(df.index)
-
+	print(sex)
+	print(age)
+	print(season)
+	print(typ)
+	print(function)
+	print(style)
+	print(price)
 	score_ls = []
 
 	for i in range(len(df.index)):
@@ -27,12 +34,16 @@ def recommend(sex,season,age,function,style,price):
 				score += age[key]*df.loc[i,key]
 			for key in list(season.keys()):
 				score += season[key]*df.loc[i,key]
+			for key in list(typ.keys()):
+				score += typ[key]*df.loc[i,key]
 			for key in list(function.keys()):
 				score += function[key]*df.loc[i,key]
 			for key in list(style.keys()):
 				score += style[key]*df.loc[i,key]
 		score_ls.append(score)
+	
 
+	print(score_ls)
 	index = 0
 	big = 0
 	for i in range(len(score_ls)):

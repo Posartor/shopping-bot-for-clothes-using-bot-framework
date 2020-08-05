@@ -145,6 +145,11 @@ class MainDialog(ComponentDialog):
             prompt_message = "好的，我还能帮到什么吗？"    
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt','w+') as f:
                 f.write('')
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/color.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/priicelog.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/score.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/log.txt', 'w').close()
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt', 'w').close()
             return await step_context.replace_dialog(self.id, prompt_message)
         else:
             with open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+'/save/satisfied.txt','w+') as f:
